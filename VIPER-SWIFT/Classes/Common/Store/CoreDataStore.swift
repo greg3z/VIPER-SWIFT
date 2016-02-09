@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 extension Array {
-    func lastObject() -> T {
+    func lastObject() -> Element {
         let endIndex = self.endIndex
         let lastItemIndex = endIndex - 1
         
@@ -23,7 +23,7 @@ class CoreDataStore : NSObject {
     var managedObjectModel : NSManagedObjectModel?
     var managedObjectContext : NSManagedObjectContext?
     
-    init() {
+    override init() {
         managedObjectModel = NSManagedObjectModel.mergedModelFromBundles(nil)
         
         persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
@@ -37,7 +37,7 @@ class CoreDataStore : NSObject {
         
         let storeURL = applicationDocumentsDirectory.URLByAppendingPathComponent("VIPER-SWIFT.sqlite")
         
-        persistentStoreCoordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: "", URL: storeURL, options: options, error: nil)
+        try? persistentStoreCoordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: "", URL: storeURL, options: options)
 
         managedObjectContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
         managedObjectContext!.persistentStoreCoordinator = persistentStoreCoordinator
@@ -46,14 +46,14 @@ class CoreDataStore : NSObject {
         super.init()
     }
     
-    func fetchEntriesWithPredicate(predicate: NSPredicate, sortDescriptors: AnyObject[], completionBlock: ((ManagedTodoItem[]) -> Void)!) {
+    func fetchEntriesWithPredicate(predicate: NSPredicate, sortDescriptors: [AnyObject], completionBlock: (([ManagedTodoItem]) -> Void)!) {
         let fetchRequest = NSFetchRequest(entityName: "TodoItem")
         fetchRequest.predicate = predicate
         fetchRequest.sortDescriptors = []
         
         managedObjectContext?.performBlock {
-            let queryResults = self.managedObjectContext?.executeFetchRequest(fetchRequest, error: nil)
-            let managedResults = queryResults! as ManagedTodoItem[]
+            let queryResults = try? self.managedObjectContext?.executeFetchRequest(fetchRequest)
+            let managedResults = queryResults! as! [ManagedTodoItem]
             completionBlock(managedResults)
         }
     }
@@ -66,6 +66,9 @@ class CoreDataStore : NSObject {
     }
     
     func save() {
-        managedObjectContext?.save(nil)
+        do {
+            try managedObjectContext?.save()
+        } catch _ {
+        }
     }
 }

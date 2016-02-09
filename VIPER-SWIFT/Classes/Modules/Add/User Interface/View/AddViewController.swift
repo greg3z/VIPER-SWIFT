@@ -30,7 +30,7 @@ class AddViewController: UIViewController, UITextFieldDelegate, AddViewInterface
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        var gestureRecognizer = UITapGestureRecognizer()
+        let gestureRecognizer = UITapGestureRecognizer()
         gestureRecognizer.addTarget(self, action: Selector("dismiss"))
         
         transitioningBackgroundView.userInteractionEnabled = true
@@ -53,7 +53,7 @@ class AddViewController: UIViewController, UITextFieldDelegate, AddViewInterface
     }
     
     func setEntryName(name: NSString) {
-        nameTextField.text = name
+        nameTextField.text = name as String
     }
     
     func setEntryDueDate(date: NSDate) {

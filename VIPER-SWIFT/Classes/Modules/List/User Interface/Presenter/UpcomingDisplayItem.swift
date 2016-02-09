@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct UpcomingDisplayItem : Equatable, Printable {
+struct UpcomingDisplayItem : Equatable, CustomStringConvertible {
     let title : String = ""
     let dueDate : String = ""
     

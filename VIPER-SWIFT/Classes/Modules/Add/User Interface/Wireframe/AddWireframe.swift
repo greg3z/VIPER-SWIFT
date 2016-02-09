@@ -35,7 +35,7 @@ class AddWireframe : NSObject, UIViewControllerTransitioningDelegate {
     
     func addViewController() -> AddViewController {
         let storyboard = mainStoryboard()
-        let addViewController: AddViewController = storyboard.instantiateViewControllerWithIdentifier(AddViewControllerIdentifier) as AddViewController
+        let addViewController: AddViewController = storyboard.instantiateViewControllerWithIdentifier(AddViewControllerIdentifier) as! AddViewController
         return addViewController
     }
     
