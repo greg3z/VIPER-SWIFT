@@ -26,12 +26,11 @@ class CoreDataStore : NSObject {
     override init() {
         managedObjectModel = NSManagedObjectModel.mergedModelFromBundles(nil)
         
-        persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
+        persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel!)
         
         let domains = NSSearchPathDomainMask.UserDomainMask
         let directory = NSSearchPathDirectory.DocumentDirectory
         
-        let error = NSError()
         let applicationDocumentsDirectory : AnyObject = NSFileManager.defaultManager().URLsForDirectory(directory, inDomains: domains).lastObject()
         let options = [NSMigratePersistentStoresAutomaticallyOption : true, NSInferMappingModelAutomaticallyOption : true]
         
@@ -59,8 +58,8 @@ class CoreDataStore : NSObject {
     }
     
     func newTodoItem() -> ManagedTodoItem {
-        let entityDescription = NSEntityDescription.entityForName("TodoItem", inManagedObjectContext: managedObjectContext)
-        let newEntry = NSManagedObject(entity: entityDescription, insertIntoManagedObjectContext: managedObjectContext) as ManagedTodoItem
+        let entityDescription = NSEntityDescription.entityForName("TodoItem", inManagedObjectContext: managedObjectContext!)
+        let newEntry = NSManagedObject(entity: entityDescription!, insertIntoManagedObjectContext: managedObjectContext) as! ManagedTodoItem
         
         return newEntry
     }

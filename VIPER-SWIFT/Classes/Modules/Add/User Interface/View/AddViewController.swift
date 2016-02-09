@@ -12,14 +12,14 @@ import UIKit
 class AddViewController: UIViewController, UITextFieldDelegate, AddViewInterface {
     var eventHandler : AddModuleInterface?
 
-    @IBOutlet var nameTextField : UITextField
+    @IBOutlet var nameTextField : UITextField!
     @IBOutlet var datePicker : UIDatePicker?
     
     var minimumDate : NSDate = NSDate()
     var transitioningBackgroundView : UIView = UIView()
     
     @IBAction func save(sender: AnyObject) {
-        eventHandler?.saveAddActionWithName(nameTextField.text, dueDate: datePicker!.date)
+        eventHandler?.saveAddActionWithName(nameTextField.text!, dueDate: datePicker!.date)
     }
     
     @IBAction func cancel(sender: AnyObject) {
